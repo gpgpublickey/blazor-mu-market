@@ -1,0 +1,37 @@
+﻿@page "/"
+@inject HttpClient Http
+@using Domain
+
+<PageTitle>Blazing Trails</PageTitle>
+@if(_trails != null)
+{
+        <div class="grid">
+            @foreach (var trail in _trails)
+            {
+                <TrailCard Trail="trail"/>
+            }
+        </div>
+}
+else
+{
+        <p>Loading trails...</p>
+}
+
+@code {
+    private IEnumerable<Trail>? _trails;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _trails = await Http.GetFromJsonAsync<IEnumerable<Trail>>("Trails/trails.json");
+
+        }
+        catch(HttpRequestException ex)
+        {
+            Console.WriteLine($"There was a problem loading trail data: {ex.Message}");
+        }
+        await base.OnInitializedAsync();
+    }
+}
+
