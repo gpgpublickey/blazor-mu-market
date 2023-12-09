@@ -3,7 +3,7 @@ namespace hellfish.Domain
 {
 	public class RouteInstruction
 	{
-		public RouteInstruction()
+        public RouteInstruction()
 		{
 		}
 

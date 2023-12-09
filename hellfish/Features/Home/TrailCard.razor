@@ -1,4 +1,6 @@
 ﻿@using Domain
+@implements IDisposable
+@implements IAsyncDisposable
 
 <div class="card shadow" style="width: 18rem;">
     <img src="@Trail.Image" class="card-img-top" alt="@Trail.Name" />
@@ -18,11 +20,19 @@
                 @Trail.Length km
             </span>
         </div>
+        <button class="btn btn-primary" title="View" @onclick="@(async () => await OnSelected.InvokeAsync(Trail))">
+            <i class="bi bi-binoculars"></i>
+        </button>
     </div>
 </div>
 
 @code {
     [Parameter, EditorRequired]
     public Trail Trail { get; set; } = default!;
-}
 
+    [Parameter, EditorRequired]
+    public EventCallback<Trail> OnSelected { get; set; }
+
+    public void Dispose() => Console.WriteLine("Test dispose");
+    public async ValueTask DisposeAsync() => Console.WriteLine("Test dispose");
+}

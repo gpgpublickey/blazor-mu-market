@@ -1,0 +1,13 @@
+div > id: main
+	data-testid="conversation-panel-body"
+		data-testid="conversation-panel-messages"
+			role="application"
+				role="row"
+					data-testid="conv-msg-false_120363048196431045@g.us_C9A1F980AE9233C6C6_556293262817@c.us
+						span > data-testid="author" (nombre)
+						span > data-testid="author" role="button" (telefono)
+						span > class="selectable-text copyable-text" (texto)
+						data-testid="media-url-provider"
+							img > src="blob:......"
+
+data-testid="pinned2"

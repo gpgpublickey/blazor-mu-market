@@ -9,6 +9,10 @@
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' ">
     <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\trails\trails.json" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.11" PrivateAssets="all" />
@@ -21,12 +25,12 @@
     <None Remove="Domain\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Features\" />
     <Folder Include="Features\Layout\" />
-    <Folder Include="Features\Home\" />
     <Folder Include="Domain\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Remove="wwwroot\Trails\trails.json" />
+    <None Include="wwwroot\trails\trails.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

@@ -1,0 +1,17 @@
+1027mb
+8% cpu
+
+
+
+micro 4.57 ghz, 4 cores 8 hilos
+
+
+
+
+
+operativo 20%
+
+
+10 cuentas 80% de cpu y 11gb de ram y 6gb de ram gpu
+
+me da para 10cuentas
