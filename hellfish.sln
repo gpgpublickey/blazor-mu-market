@@ -5,8 +5,6 @@ VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hellfish", "hellfish\hellfish.csproj", "{AE9CBBCD-EB10-48BF-A06C-65E8016795CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mumarket", "Z:\repos\mu-market\api\mumarket\mumarket.csproj", "{EB3E9246-4D0E-4008-93B7-1DD662EADBA8}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bot", "Bot", "{E69B0E0A-2C0B-4D88-9424-85AE220DB76F}"
 	ProjectSection(SolutionItems) = preProject
 		bot\browser.png = bot\browser.png
@@ -15,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bot", "Bot", "{E69B0E0A-2C0
 		bot\selectors.txt = bot\selectors.txt
 		bot\wasap.js = bot\wasap.js
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mumarket", "api\mumarket\mumarket.csproj", "{D0A893AC-A226-4562-9FD1-57DC8756F811}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,10 +26,10 @@ Global
 		{AE9CBBCD-EB10-48BF-A06C-65E8016795CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE9CBBCD-EB10-48BF-A06C-65E8016795CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE9CBBCD-EB10-48BF-A06C-65E8016795CD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EB3E9246-4D0E-4008-93B7-1DD662EADBA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB3E9246-4D0E-4008-93B7-1DD662EADBA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB3E9246-4D0E-4008-93B7-1DD662EADBA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB3E9246-4D0E-4008-93B7-1DD662EADBA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0A893AC-A226-4562-9FD1-57DC8756F811}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0A893AC-A226-4562-9FD1-57DC8756F811}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0A893AC-A226-4562-9FD1-57DC8756F811}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0A893AC-A226-4562-9FD1-57DC8756F811}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

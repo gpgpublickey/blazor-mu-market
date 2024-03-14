@@ -1,46 +1,81 @@
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using mumarket.DataContracts.Request;
+using mumarket.DataContracts.Responses;
 using mumarket.Models;
+using mumarket.Models.Commands;
 using OpenAI_API;
 using OpenAI_API.Chat;
-using OpenAI_API.Completions;
+using OpenAI_API.Models;
 
 namespace mumarket.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WhatsappController : ControllerBase
+    public class MarketController : ControllerBase
     {
-        private readonly ILogger<WhatsappController> _logger;
+        private readonly ILogger<MarketController> _logger;
         private readonly MuMarketDbContext _db;
         private readonly OpenAIAPI _chatGpt;
         private readonly Conversation _chat;
 
 
-        public WhatsappController(
-            ILogger<WhatsappController> logger,
+        public MarketController(
+            ILogger<MarketController> logger,
             MuMarketDbContext db)
         {
             _logger = logger;
             _db = db;
-            _chatGpt = new OpenAI_API.OpenAIAPI("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");
+            _chatGpt = new OpenAI_API.OpenAIAPI("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");
             _chat = _chatGpt.Chat.CreateConversation();
+            _chat.Model = Model.GPT4;
+            _chat.RequestParameters.Temperature = 1;
+        }
+
+        [HttpPost("commands")]
+        public async Task<string> PostCommand(CommandRequest request)
+        {
+            var cmdFactory = new CommandsChainFactory();
+            var chain = cmdFactory.CreateGeneralChain(request, _db);
+            var result = await chain.Execute();
+
+            if (!result.IsSuccessful)
+            {
+                _logger.LogWarning($"{result.CommandType} command failed");
+            }
+
+            return result.Message;
         }
 
         [HttpPost("sell")]
-        public async Task PostSell(Sell request)
+        public async Task PostSell(AddSellRequest request)
         {
             using (var trx = _db.Database.BeginTransaction())
             {
                 try
                 {
-                    var sellExists = await _db.Sells.AnyAsync(x => x.Author == request.Author);
+                    bool sellExists;
+
+                    if (request.Img != default)
+                    {
+                        sellExists = await _db.Sells.AnyAsync(x => x.Author == request.Author && x.Img == request.Img);
+                    }
+                    else
+                    {
+                        sellExists = await _db.Sells.AnyAsync(x => x.Author == request.Author);
+                    }
+
                     if (!sellExists)
                     {
-                        var sell = await _db.Sells.AddAsync(request);
+                        var sell = await _db.Sells.AddAsync(new Sell
+                        {
+                            Author = request.Author,
+                            Post = request.Post,
+                            CreatedAt = DateTime.UtcNow,
+                            Img = request.Img
+                        });
                         await _db.SaveChangesAsync();
-                        SendToChatGpt(request, sell.Entity.Id);
+                        SendToChatGpt(sell.Entity, sell.Entity.Id);
                     }
 
                     trx.Commit();
@@ -81,7 +116,7 @@ namespace mumarket.Controllers
             {
                 try
                 {
-                    var request = _db.Sells.Select(x => $"Pedido de compra id: {x.Id}, contenido: {x.Post}, autor: {x.Author}");
+                    var request = _db.Sells.Where(x => x.CreatedAt.Date == DateTime.Today.Date).Select(x => $"Pedido de compra id: {x.Id}, contenido: {x.Post}, autor: {x.Author}");
                     _chat.AppendUserInput($"{req} y filtra sobre pedidos de compra unicamente incluidos a continuacion: {string.Join(";", request)}");
                     return await _chat.GetResponseFromChatbotAsync();
                 }

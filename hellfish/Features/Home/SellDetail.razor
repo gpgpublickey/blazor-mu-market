@@ -1,0 +1,57 @@
+﻿@using Domain
+<div class="drawer-wrapper @(_isOpen ? "slide" : string.Empty)">
+    <div class="drawer-mask"></div>
+    <div class="drawer">
+        @if (_activeSell is not null)
+        {
+            <div class="drawer-controls">
+                <button style="width:100%" class="btn btn-secondary button-slide yusei-magic-regular" @onclick="Close">Close</button>
+            </div>
+            <div class="drawer-content">
+                <div class="trail-details">
+                    <h3>@_activeSell.Name</h3>
+                    <h6 class="mb-3 text-muted">
+                        <a target="_blank" href="@_activeSell.PhoneLink"><img width="20%" src="images/WhatsAppButtonGreenSmall.png" /></a>
+                    </h6>
+                    <div class="mt-4">
+                        <span class="mt-5">
+                            <span class="oi oi-clock mr-2"></span>
+                            Posted @_activeSell.TimeFormated ago...
+                        </span>
+                        <span>
+                            <span class="oi mr-2"></span>
+                        </span>
+                    </div>
+                    <p class="mt-4 text-left">@_activeSell.Description</p>
+                </div>
+                @if (@_activeSell.Image != default)
+                {
+                    <img height="70%" src="data:image;base64, @_activeSell.Image" />
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private bool _isOpen;
+    private Sell? _activeSell;
+
+    [Parameter, EditorRequired]
+    public Sell? Sell { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (Sell is not null)
+        {
+            _activeSell = Sell;
+            _isOpen = true;
+        }
+    }
+
+    private void Close()
+    {
+        _activeSell = null;
+        _isOpen = false;
+    }
+}

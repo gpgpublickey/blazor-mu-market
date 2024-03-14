@@ -1,0 +1,42 @@
+﻿@using Domain
+@implements IDisposable
+@implements IAsyncDisposable
+
+<div class="card shadow fixup-card" style="width: 18rem;">
+    @if (Sell.Image != null)
+    {
+        <img class="card-img-top" alt="@Sell.Name" src="data:image;base64, @Sell.Image" />
+    } 
+    else
+    {
+        <img class="card-img-top" alt="@Sell.Name" src="images/noimage.jpeg" width="286" height="214" />
+    }
+
+    <div class="card-body">
+        <h5 class="card-title ellipsis">@Sell.Description</h5>
+        <h6 class="card-subtitle mb-3 text-muted">
+            <span class="oi oi-map-marker"></span>
+            @Sell.Location
+        </h6>
+        <div class="d-flex justify-content-between">
+            <span>
+                <span class="oi oi-clock mr-2"></span>
+                Post @Sell.TimeFormated ago...
+            </span>
+        </div>
+        <button class="btn btn-primary" title="View" @onclick="@(async () => await OnSelected.InvokeAsync(Sell))">
+            <i class="bi bi-binoculars"></i>
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public Sell Sell { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public EventCallback<Sell> OnSelected { get; set; }
+
+    public void Dispose() => Console.WriteLine("Test dispose");
+    public async ValueTask DisposeAsync() => Console.WriteLine("Test dispose");
+}

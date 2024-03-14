@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -14,8 +14,9 @@
     <Content Remove="wwwroot\trails\trails.json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.11" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.11" PrivateAssets="all" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.3" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,9 +25,12 @@
     <None Remove="Features\Home\" />
     <None Remove="Domain\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\api\mumarket\DataContracts\Responses\SellResponse.cs" Link="Domain\SellResponse.cs" />
+  </ItemGroup>
   <ItemGroup>
     <Folder Include="Features\Layout\" />
-    <Folder Include="Domain\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\trails\trails.json">

@@ -1,0 +1,66 @@
+﻿@page "/search/{SearchTerm}"
+@using AutoMapper
+@using hellfish.Domain
+@using mumarket.DataContracts.Responses
+@inject HttpClient Http
+@inject NavigationManager NavManager
+@inject IMapper Mapper
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="/">Home</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Search
+        </li>
+    </ol>
+</nav>
+
+<PageTitle>Search Selling offers</PageTitle>
+
+<h3>Search results for @SearchTerm</h3>
+
+@if (_searchResults == null)
+{
+    <p>Loading Search results....</p>
+}
+else
+{
+    <SellDetail Sell="_selectedSell" />
+    <div class="grid">
+        @foreach (var sell in _searchResults)
+        {
+            <SellCard Sell="sell" OnSelected="HandleSellSelected" />
+        }
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string SearchTerm { get; set; } = default!;
+
+    private IEnumerable<Sell>? _searchResults;
+    private Sell _selectedSell;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var sells = Mapper.Map<IEnumerable<Sell>>(await Http.GetFromJsonAsync<IEnumerable<SellResponse>>("http://localhost:5253/Sells"));
+            _searchResults = sells.DistinctBy(x => x.Description)
+            .Where(x => x.Description.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase));
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"There was a problem loading sells data: {ex.Message}");
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+    private void HandleSellSelected(Sell sell)
+    {
+        _selectedSell = sell;
+    }
+}

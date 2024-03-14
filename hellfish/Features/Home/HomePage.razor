@@ -1,44 +1,50 @@
 ﻿@page "/"
 @inject HttpClient Http
+@inject IMapper _mapper;
+@using AutoMapper
 @using Domain
 @using System.Diagnostics;
+@using mumarket.DataContracts.Responses
 
-<PageTitle>Blazing Trails</PageTitle>
-@if (_trails != null)
+<PageTitle>Mu Market</PageTitle>
+@if (_sells != null)
 {
-    <TrailDetail Trail="_selectedTrail"></TrailDetail>
+    <SellDetail Sell="_selectedSell"></SellDetail>
+    <SellSearch />
     <div class="grid">
-        @foreach (var trail in _trails)
+        @foreach (var sell in _sells)
         {
-            <TrailCard Trail="trail" OnSelected="HandleTrailSelected" />
+            <SellCard Sell="sell" OnSelected="HandleSellSelected" />
         }
     </div>
 }
 else
 {
-    <p>Loading trails...</p>
+    <p style="text-align:center"><img src="images/loader.gif" /><br />Loading posts...</p>
 }
 
 @code {
-    private IEnumerable<Trail>? _trails;
-    private Trail? _selectedTrail;
+    private IEnumerable<Sell>? _sells;
+    private Sell? _selectedSell;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            _trails = await Http.GetFromJsonAsync<IEnumerable<Trail>>("Trails/trails.json");
+            _sells = await Http.GetFromJsonAsync<IEnumerable<Sell>>("Trails/trails.json");
+            var sells = await Http.GetFromJsonAsync<IEnumerable<SellResponse>>("http://localhost:5253/Sells");
+            _sells = _mapper.Map<IEnumerable<Sell>>(sells?.DistinctBy(x => x.Post).OrderByDescending(x => x.CreatedAt));
         }
         catch (HttpRequestException ex)
         {
-            Console.WriteLine($"There was a problem loading trail data: {ex.Message}");
+            Console.WriteLine($"There was a problem loading sells data: {ex.Message}");
         }
         await base.OnInitializedAsync();
     }
 
-    private void HandleTrailSelected(Trail trail)
+    private void HandleSellSelected(Sell sell)
     {
-        _selectedTrail = trail;
+        _selectedSell = sell;
     }
 }
 

@@ -10,5 +10,9 @@ namespace mumarket
         }
 
         public DbSet<Sell> Sells { get; set; }
+
+        public DbSet<Karma> Karmas { get; set; }
+
+        public DbSet<Models.User> Users { get; set; }
     }
 }

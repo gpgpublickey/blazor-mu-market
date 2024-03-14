@@ -70,6 +70,50 @@
 }
 
 .drawer-controls {
-    padding: 20px;
-    background-color: white;
+    background-color: #858585;
+}
+
+.fixup-card {
+    display: inline-block !important;
+    margin: 10px;
+}
+
+.ellipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.navbar {
+    margin:0px;
+    padding: 0px;
+    justify-content: left;
+}
+
+.navbar-brand {
+    margin: 0px;
+    padding: 0px;
+}
+
+.button-slide {
+    width: 100%;
+    height: 80px;
+    border-radius: 0px;
+    border-style: none;
+    font-weight: bolder;
+    font-size: xx-large;
+}
+
+.yusei-magic-regular {
+    font-family: "Yusei Magic", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.br-10 {
+    border-radius: 10px;
+}
+
+.index-98 {
+    z-index: 98;
 }
