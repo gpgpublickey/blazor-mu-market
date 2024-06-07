@@ -21,7 +21,7 @@ client.on('message_create', async message => {
 	console.log('Chat name: '+chat.name)
 	var participants = chat.participants
 	let particpiantsJson = JSON.stringify(participants)
-	console.log(particpiantsJson)
+
 	await fetch('http://localhost:5253/users/bulk', {  
 		method: 'POST',
 		headers: {

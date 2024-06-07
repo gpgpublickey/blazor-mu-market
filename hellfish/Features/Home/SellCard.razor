@@ -18,13 +18,13 @@
             <span class="oi oi-map-marker"></span>
             @Sell.Location
         </h6>
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between time">
             <span>
                 <span class="oi oi-clock mr-2"></span>
                 Post @Sell.TimeFormated ago...
             </span>
         </div>
-        <button class="btn btn-primary" title="View" @onclick="@(async () => await OnSelected.InvokeAsync(Sell))">
+        <button class="btn btn-primary bg-crimson" title="View" @onclick="@(async () => await OnSelected.InvokeAsync(Sell))">
             <i class="bi bi-binoculars"></i>
         </button>
     </div>
