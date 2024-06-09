@@ -32,8 +32,8 @@ else
     {
         try
         {
-            var sells = await Http.GetFromJsonAsync<IEnumerable<SellResponse>>("sells");
-            sells ??= new List<SellResponse>();
+            var sells = await Http.GetFromJsonAsync<IEnumerable<SellResponse>>("trails/trails.json");
+            sells = await Http.GetFromJsonAsync<IEnumerable<SellResponse>>("sells");
             _sells = _mapper.Map<IEnumerable<Sell>>(sells.DistinctBy(x => x.Post).OrderByDescending(x => x.CreatedAt));
         }
         catch (HttpRequestException ex)

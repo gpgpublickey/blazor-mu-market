@@ -47,7 +47,7 @@ else
     {
         try
         {
-            var sells = Mapper.Map<IEnumerable<Sell>>((await Http.GetFromJsonAsync<IEnumerable<SellResponse>>("sells")) ?? new List<SellResponse>());
+            var sells = Mapper.Map<IEnumerable<Sell>>((await Http.GetFromJsonAsync<IEnumerable<SellResponse>>("sells")));
             _searchResults = sells.DistinctBy(x => x.Description)
             .Where(x => x.Description.Contains(SearchTerm, StringComparison.InvariantCultureIgnoreCase));
         }
