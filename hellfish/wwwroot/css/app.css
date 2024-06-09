@@ -85,7 +85,7 @@
 }
 
 .navbar {
-    margin:0px;
+    margin: 0px;
     padding: 0px;
     justify-content: left;
 }
@@ -136,26 +136,51 @@
 }
 
 .bg-crimson {
-    background-color:crimson;
-    border-color: crimson;
-}
-
-.bg-crimson:hover {
     background-color: crimson;
     border-color: crimson;
 }
 
-.bg-crimson:active {
-    background-color: crimson;
-    border-color: crimson;
+    .bg-crimson:hover {
+        background-color: crimson;
+        border-color: crimson;
+    }
+
+    .bg-crimson:active {
+        background-color: crimson;
+        border-color: crimson;
+    }
+
+    .bg-crimson:focus {
+        background-color: crimson;
+        border-color: crimson;
+    }
+
+    .bg-crimson:visited {
+        background-color: crimson;
+        border-color: crimson;
+    }
+
+.bg-darkgoldenrod {
+    background-color: darkgoldenrod;
+    border-color: darkgoldenrod;
 }
 
-.bg-crimson:focus {
-    background-color: crimson;
-    border-color: crimson;
-}
+    .bg-darkgoldenrod:hover {
+        background-color: darkgoldenrod;
+        border-color: darkgoldenrod;
+    }
 
-.bg-crimson:visited {
-    background-color: crimson;
-    border-color: crimson;
-}
+    .bg-darkgoldenrod:active {
+        background-color: darkgoldenrod;
+        border-color: darkgoldenrod;
+    }
+
+    .bg-darkgoldenrod:focus {
+        background-color: darkgoldenrod;
+        border-color: darkgoldenrod;
+    }
+
+    .bg-darkgoldenrod:visited {
+        background-color: darkgoldenrod;
+        border-color: darkgoldenrod;
+    }

@@ -22,13 +22,15 @@ namespace mumarket.Controllers
 
         public MarketController(
             ILogger<MarketController> logger,
-            MuMarketDbContext db)
+            MuMarketDbContext db,
+            IConfiguration configuration)
         {
             _logger = logger;
             _db = db;
-            _chatGpt = new OpenAI_API.OpenAIAPI("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");
+            var key = configuration.GetValue<string>("openai");
+            _chatGpt = new OpenAI_API.OpenAIAPI(key);
             _chat = _chatGpt.Chat.CreateConversation();
-            _chat.Model = Model.GPT4;
+            _chat.Model = Model.ChatGPTTurbo;
             _chat.RequestParameters.Temperature = 1;
         }
 
@@ -54,7 +56,8 @@ namespace mumarket.Controllers
             {
                 try
                 {
-                    bool sellExists;
+                    bool sellExists = false;
+                    bool isSell = false;
 
                     if (request.Img != default)
                     {
@@ -67,15 +70,24 @@ namespace mumarket.Controllers
 
                     if (!sellExists)
                     {
+                        var question = $"Answer with 'yes' or 'no' if the next message is a buy or sell offer: '{request.Post}'";
+                        _chat.AppendUserInput(question);
+                        var answer = await _chat.GetResponseFromChatbotAsync();
+                        isSell = answer.Contains("yes", StringComparison.InvariantCultureIgnoreCase);
+                    }
+
+                    if (!sellExists && !request.Post!.StartsWith("/$"))
+                    {
                         var sell = await _db.Sells.AddAsync(new Sell
                         {
                             Author = request.Author,
                             Post = request.Post,
                             CreatedAt = DateTime.UtcNow,
-                            Img = request.Img
+                            Img = request.Img,
+                            IsSell = isSell
                         });
                         await _db.SaveChangesAsync();
-                        SendToChatGpt(sell.Entity, sell.Entity.Id);
+                        //SendToChatGpt(sell.Entity, sell.Entity.Id);
                     }
 
                     trx.Commit();

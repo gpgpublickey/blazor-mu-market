@@ -8,6 +8,8 @@
 
         public string PhoneLink { get; set; }
 
+        public int Karma { get; set; }
+
         public string? Img { get; set; }
 
         public DateTime CreatedAt { get; set; }

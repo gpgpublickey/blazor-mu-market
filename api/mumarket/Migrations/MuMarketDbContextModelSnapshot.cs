@@ -58,6 +58,9 @@ namespace mumarket.Migrations
                     b.Property<string>("Img")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsSell")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Post")
                         .HasColumnType("TEXT");
 
@@ -82,6 +85,9 @@ namespace mumarket.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsAdmin")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsBot")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsOwner")

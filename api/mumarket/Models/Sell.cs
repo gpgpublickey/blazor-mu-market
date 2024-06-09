@@ -15,5 +15,7 @@ namespace mumarket.Models
         public DateTime CreatedAt { get; set; }
 
         public Realms Realm { get; set; }
+
+        public bool IsSell { get; set; }
     }
 }

@@ -26,6 +26,8 @@ namespace hellfish.Domain
 		public IEnumerable<RouteInstruction> Route { get; set; } = Array.Empty<RouteInstruction>();
 
         public string PhoneLink { get; set; }
+
+        public int Karma { get; set; }
     }
 }
 

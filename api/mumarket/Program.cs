@@ -12,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MuMarketDbContext>(o => o.UseSqlite("Data Source=mydb.db"));
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 

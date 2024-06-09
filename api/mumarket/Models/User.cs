@@ -11,5 +11,7 @@
         public bool IsAdmin { get; set; }
 
         public bool IsOwner { get; set; }
+
+        public bool IsBot { get; set; }
     }
 }

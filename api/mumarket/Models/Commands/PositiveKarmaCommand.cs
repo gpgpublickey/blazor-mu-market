@@ -35,8 +35,10 @@ namespace mumarket.Models.Commands
                 bool isValidReceiver = await IsValidReceiver(receiver);
                 bool isValidSender = await IsValidSender(Parameters.Author, receiver);
                 bool isFlood = await IsFlood(Parameters.Author);
+                var user = await _db.Users.FirstOrDefaultAsync(x => x.Alias == receiver);
+                bool isBot = user?.IsBot ?? false;
 
-                if (isValidReceiver && isValidSender && !isFlood)
+                if (isValidReceiver && isValidSender && !isFlood && !isBot)
                 {
                     await _db.Karmas.AddAsync(new Karma
                     {

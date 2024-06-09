@@ -40,11 +40,10 @@ client.on('message_create', async message => {
 
 client.on('message_create', async message => {
 	var chat = await message.getChat()
-
-	if (chat.isGroup && message.body.includes('/') && (chat.name.includes("Alfheim MARKET MuOnline") || chat.name == "Test")) {
+	if (!message.hasMedia && chat.isGroup && message.body.includes('/') && (/*chat.name.includes("Alfheim MARKET MuOnline") ||*/ chat.name.includes("Mu Moradito - Market Oficial") || chat.name == "Test")) {
 		let msgJson = {
 			raw: btoa(message),
-			msg: btoa(message.body),
+			msg: btoa(message.body.split('base64,')[1]),
 			author: message.author
 		  }
 		await sendCmd(msgJson, message)
