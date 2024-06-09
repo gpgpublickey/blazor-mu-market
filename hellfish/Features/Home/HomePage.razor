@@ -33,7 +33,8 @@ else
         try
         {
             var sells = await Http.GetFromJsonAsync<IEnumerable<SellResponse>>("sells");
-            _sells = _mapper.Map<IEnumerable<Sell>>(sells?.DistinctBy(x => x.Post).OrderByDescending(x => x.CreatedAt));
+            sells ??= new List<SellResponse>();
+            _sells = _mapper.Map<IEnumerable<Sell>>(sells.DistinctBy(x => x.Post).OrderByDescending(x => x.CreatedAt));
         }
         catch (HttpRequestException ex)
         {
