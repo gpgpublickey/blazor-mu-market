@@ -12,7 +12,7 @@
     <SellDetail Sell="_selectedSell"></SellDetail>
     <SellSearch />
     <div class="grid">
-        @foreach (var sell in _sells)
+        @foreach (var sell in _sells.Where(x => x != null))
         {
             <SellCard Sell="sell" OnSelected="HandleSellSelected" />
         }
