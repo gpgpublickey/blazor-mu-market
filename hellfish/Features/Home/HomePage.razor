@@ -1,6 +1,6 @@
 ﻿@page "/"
 @inject HttpClient Http
-@inject IMapper _mapper;
+@inject IMapper _mapper
 @using AutoMapper
 @using Domain
 @using System.Diagnostics;
@@ -32,8 +32,7 @@ else
     {
         try
         {
-            _sells = await Http.GetFromJsonAsync<IEnumerable<Sell>>("Trails/trails.json");
-            var sells = await Http.GetFromJsonAsync<IEnumerable<SellResponse>>("http://localhost:5253/Sells");
+            var sells = await Http.GetFromJsonAsync<IEnumerable<SellResponse>>("sells");
             _sells = _mapper.Map<IEnumerable<Sell>>(sells?.DistinctBy(x => x.Post).OrderByDescending(x => x.CreatedAt));
         }
         catch (HttpRequestException ex)

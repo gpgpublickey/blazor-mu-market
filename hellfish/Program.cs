@@ -6,8 +6,9 @@ using System.Reflection;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
-
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+var api = builder.Configuration.GetValue<string>("api");
+var env = builder.HostEnvironment.Environment;
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(api)});
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 await builder.Build().RunAsync();
