@@ -30,7 +30,7 @@ namespace mumarket.Controllers
             var key = configuration.GetValue<string>("openai");
             _chatGpt = new OpenAI_API.OpenAIAPI(key);
             _chat = _chatGpt.Chat.CreateConversation();
-            _chat.Model = Model.ChatGPTTurbo;
+            _chat.Model = Model.GPT4;
             _chat.RequestParameters.Temperature = 1;
         }
 
@@ -70,7 +70,7 @@ namespace mumarket.Controllers
 
                     if (!sellExists)
                     {
-                        var question = $"Answer with 'yes' or 'no' if the next message is a buy or sell offer: '{request.Post}'";
+                        var question = $"Answer with 'yes' or 'no' if the next message is a buy or sell offer having considering that B<, S<, B> S> means BUY or SELL: '{request.Post}'";
                         _chat.AppendUserInput(question);
                         var answer = await _chat.GetResponseFromChatbotAsync();
                         isSell = answer.Contains("yes", StringComparison.InvariantCultureIgnoreCase);
