@@ -14,7 +14,7 @@ app.get('/qr', (req, res) => {
 });
 
 // Start the server
-const PORT = 8080;
+const PORT = 80;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

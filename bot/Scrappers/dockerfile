@@ -5,7 +5,7 @@ ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium-browser
 WORKDIR /usr/src/app
 COPY --chown=chrome package.json package-lock.json WhatsappMarketScrapper.js  ./
 RUN npm install
-EXPOSE 8080
+EXPOSE 80
 ENTRYPOINT ["node", "WhatsappMarketScrapper.js"]
 
 
