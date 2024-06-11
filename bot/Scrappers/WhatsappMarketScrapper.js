@@ -26,10 +26,10 @@ app.listen(PORT, () => {
   await page.setViewport({ width: 1024, height: 768 })
   await page.goto('https://web.whatsapp.com/')
   await delay(15000);
+  await page.screenshot({path: 'qr.png'})
   
   while(true){
     await delay(3000)
-    await page.screenshot({path: 'qr.png'})
     await pickChatGroups(page, main, browser)
     console.log(" [+] Another round....")
   }
