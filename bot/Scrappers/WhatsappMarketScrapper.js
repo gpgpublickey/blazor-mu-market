@@ -3,8 +3,24 @@
 const fs = require('fs')
 const puppeteer = require('puppeteer');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const express = require('express');
+const app = express();
+
+// Serve the image file
+app.get('/qr', (req, res) => {
+    // Replace 'my-image.jpg' with your actual image file path
+    const imagePath = __dirname + '/browser.png';
+    res.sendFile(imagePath);
+});
+
+// Start the server
+const PORT = 80;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
 (async () => {
-  const browser = await puppeteer.launch({sessionStorage:false, headless: true})//, slowMo: 500
+  const browser = await puppeteer.launch({sessionStorage:false, headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox']})//, slowMo: 500
   const page = await browser.newPage()
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3641.0 Safari/537.36')
   await page.setViewport({ width: 1024, height: 768 })
@@ -62,7 +78,8 @@ async function main(page, elements, brw){
       }).catch(() => {})
       await pageImg.close()
       if(imgJson.img != null) {
-        await fetch('http://localhost:5253/market/sell', {  
+        //http://localhost:5253/market/sell
+        await fetch('https://mumarket-api.azurewebsites.net/market/sell', {  
           method: 'POST',
           headers: {
             "Content-Type": "application/json",
@@ -80,7 +97,8 @@ async function main(page, elements, brw){
         author: await element.evaluate(el => el.getAttribute('data-pre-plain-text'))
       }
       //console.log(msgJson)
-      await fetch('http://localhost:5253/market/sell', {  
+      //http://localhost:5253/market/sell
+      await fetch('https://mumarket-api.azurewebsites.net/market/sell', {  
           method: 'POST',
           headers: {
             "Content-Type": "application/json",
