@@ -20,7 +20,7 @@ app.listen(PORT, () => {
 });
 
 (async () => {
-  const browser = await puppeteer.launch({sessionStorage:false, headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox']})//, slowMo: 500
+  const browser = await puppeteer.launch({timeout:0, sessionStorage:false, headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox']})//, slowMo: 500
   const page = await browser.newPage()
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3641.0 Safari/537.36')
   await page.setViewport({ width: 1024, height: 768 })
