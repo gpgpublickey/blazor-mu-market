@@ -6,6 +6,13 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 const express = require('express');
 const app = express();
 
+// Serve the image file
+app.get('/qr', (req, res) => {
+    // Replace 'my-image.jpg' with your actual image file path
+    const imagePath = __dirname + '/qr.png';
+    res.sendFile(imagePath); 
+});
+
 // Start the server
 const PORT = 8080;
 app.listen(PORT, () => {
@@ -19,17 +26,10 @@ app.listen(PORT, () => {
   await page.setViewport({ width: 1024, height: 768 })
   await page.goto('https://web.whatsapp.com/')
   await delay(15000);
-  await page.screenshot({path: 'browser.png'})
   
-  // Serve the image file
-  app.get('/qr', (req, res) => {
-    // Replace 'my-image.jpg' with your actual image file path
-    const imagePath = __dirname + '/browser.png';
-    res.sendFile(imagePath); 
-  });
-
   while(true){
     await delay(3000)
+    await page.screenshot({path: 'qr.png'})
     await pickChatGroups(page, main, browser)
     console.log(" [+] Another round....")
   }
