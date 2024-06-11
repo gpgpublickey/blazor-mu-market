@@ -10,6 +10,7 @@ const app = express();
 app.get('/qr', (req, res) => {
     // Replace 'my-image.jpg' with your actual image file path
     const imagePath = __dirname + '/browser.png';
+    delay(15000);
     res.sendFile(imagePath);
 });
 
