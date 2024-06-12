@@ -14,7 +14,7 @@ app.get('/qr', (req, res) => {
 });
 
 // Start the server
-const PORT = 80;
+const PORT = 8080;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
@@ -86,6 +86,8 @@ async function main(page, elements, brw){
             "Content-Type": "application/json",
           },
           body: JSON.stringify(imgJson)
+        }).catch(function (error) {  
+          console.log('Request failure: ', error);  
         })
       }
     })
@@ -107,7 +109,7 @@ async function main(page, elements, brw){
           body: JSON.stringify(msgJson)
       })
       .then(function (data) {  
-        // console.log('Request success: ', data);  
+        console.log('Request success');  
       })  
       .catch(function (error) {  
         console.log('Request failure: ', error);  
