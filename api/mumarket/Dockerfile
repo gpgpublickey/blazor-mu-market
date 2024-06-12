@@ -8,7 +8,7 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["api/mumarket/mumarket.csproj", "api/mumarket/"]
+COPY ["/workspace/.git/api/mumarket/mumarket.csproj", "api/mumarket/"]
 RUN dotnet restore "./api/mumarket/mumarket.csproj"
 COPY . .
 WORKDIR "/src/api/mumarket"
