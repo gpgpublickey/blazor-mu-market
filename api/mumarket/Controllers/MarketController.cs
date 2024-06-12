@@ -93,12 +93,10 @@ namespace mumarket.Controllers
                 }
                 catch (ChatGptException e)
                 {
-                    _logger.LogError(e.Message, e.InnerException);
                     trx.Commit();
                 }
                 catch(Exception e)
                 {
-                    _logger.LogError(e.Message, e.InnerException);
                     trx.Rollback();
                 }
             }
