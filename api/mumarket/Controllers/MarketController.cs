@@ -89,15 +89,16 @@ namespace mumarket.Controllers
                         await _db.SaveChangesAsync();
                         //SendToChatGpt(sell.Entity, sell.Entity.Id);
                     }
-
                     trx.Commit();
                 }
-                catch (ChatGptException)
+                catch (ChatGptException e)
                 {
+                    _logger.LogError(e.Message, e.InnerException);
                     trx.Commit();
                 }
-                catch
+                catch(Exception e)
                 {
+                    _logger.LogError(e.Message, e.InnerException);
                     trx.Rollback();
                 }
             }
