@@ -70,7 +70,7 @@ namespace mumarket.Controllers
 
                     if (!sellExists)
                     {
-                        var question = $"Answer with 'yes' or 'no' if the next message is a buy or sell offer having considering that B<, S<, B> S> means BUY or SELL: '{request.Post}'";
+                        var question = $"Answer with 'yes' or 'no' if the next message is a buy or sell offer having considering additionally that B<, S<, B>, S>, B> , S> ; means BUY or SELL: '{request.Post}'";
                         _chat.AppendUserInput(question);
                         var answer = await _chat.GetResponseFromChatbotAsync();
                         isSell = answer.Contains("yes", StringComparison.InvariantCultureIgnoreCase);
