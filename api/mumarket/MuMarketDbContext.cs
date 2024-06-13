@@ -7,6 +7,7 @@ namespace mumarket
     {
         public MuMarketDbContext(DbContextOptions opt) : base(opt)
         {
+            Database.Migrate();
         }
 
         public DbSet<Sell> Sells { get; set; }
