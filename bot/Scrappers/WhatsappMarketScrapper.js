@@ -7,17 +7,17 @@ const express = require('express');
 const app = express();
 
 // Serve the image file
-app.get('/qr', (req, res) => {
-    // Replace 'my-image.jpg' with your actual image file path
-    const imagePath = __dirname + '/qr.png';
-    res.sendFile(imagePath); 
-});
+// app.get('/qr', (req, res) => {
+//     // Replace 'my-image.jpg' with your actual image file path
+//     const imagePath = __dirname + '/qr.png';
+//     res.sendFile(imagePath); 
+// });
 
 // Start the server
-const PORT = 8080;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+// const PORT = 8080;
+// app.listen(PORT, () => {
+//     console.log(`Server running on port ${PORT}`);
+// });
 
 (async () => {
   const browser = await puppeteer.launch({timeout:0, sessionStorage:false, headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox']})//, slowMo: 500
@@ -25,12 +25,12 @@ app.listen(PORT, () => {
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3641.0 Safari/537.36')
   await page.setViewport({ width: 1024, height: 768 })
   await page.goto('https://web.whatsapp.com/')
-  await delay(15000);
+  await delay(12000);
   await page.screenshot({path: 'qr.png'})
   await delay(15000);
  
   while(true){
-    await delay(3000)
+    await delay(6000)
     await pickChatGroups(page, main, browser)
     console.log(" [+] Another round....")
   }
