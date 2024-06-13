@@ -2,7 +2,8 @@ const { Client } = require('whatsapp-web.js')
 var qrcode = require('qrcode-terminal')
 const client = new Client({
 puppeteer: {
-	headless: true
+	headless: true,
+	args: ['--no-sandbox', '--disable-setuid-sandbox']
 },
 webVersionCache: {
 type: 'remote',
