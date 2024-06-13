@@ -1,5 +1,6 @@
 const { Client } = require('whatsapp-web.js')
-var qrcode = require('qrcode-terminal')
+var qrcode = require('qrcode')
+
 const client = new Client({
 puppeteer: {
 	headless: true,
@@ -12,7 +13,10 @@ remotePath: 'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/h
 })
 client.on('qr', (qr) => {
 	console.log(qr)
-    qrcode.generate(qr, {small: true})
+	qrcode.toFile(
+	'fqr.png',
+	qr
+	)
 })
 client.initialize()
 
@@ -23,7 +27,7 @@ client.on('message_create', async message => {
 	var participants = chat.participants
 	let particpiantsJson = JSON.stringify(participants)
 
-	await fetch('http://localhost:5253/users/bulk', {  
+	await fetch('https://mumarket-api.azurewebsites.net/users/bulk', {  
 		method: 'POST',
 		headers: {
 		  "Content-Type": "application/json",
@@ -52,7 +56,7 @@ client.on('message_create', async message => {
 })
 
 async function sendCmd(msg, message){
-	await fetch('http://localhost:5253/market/commands', {  
+	await fetch('https://mumarket-api.azurewebsites.net/market/commands', {  
 	  method: 'POST',
 	  headers: {
 		"Content-Type": "application/json",
