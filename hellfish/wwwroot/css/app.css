@@ -184,3 +184,11 @@
         background-color: darkgoldenrod;
         border-color: darkgoldenrod;
     }
+
+.beta {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 150px;
+    height: 100px;
+}
