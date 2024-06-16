@@ -192,3 +192,8 @@
     width: 150px;
     height: 100px;
 }
+
+.nav-overflow {
+    overflow-y: scroll;
+    height: 140px;
+}
