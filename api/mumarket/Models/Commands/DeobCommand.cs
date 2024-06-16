@@ -29,7 +29,6 @@ namespace mumarket.Models.Commands
             if (Type is CommandType.Decode)
             {
                 Parameters.Raw = Encoding.UTF8.GetString(Convert.FromBase64String(Parameters.Raw));
-                Parameters.Msg = Encoding.UTF8.GetString(Convert.FromBase64String(Parameters.Msg));
                 response.IsSuccessful = true;
             }
 

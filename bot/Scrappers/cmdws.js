@@ -48,7 +48,7 @@ client.on('message_create', async message => {
 	if (!message.hasMedia && chat.isGroup && message.body.includes('/') && (/*chat.name.includes("Alfheim MARKET MuOnline") ||*/ chat.name.includes("Mu Moradito - Market Oficial") || chat.name == "Test")) {
 		let msgJson = {
 			raw: btoa(message),
-			msg: btoa(message.body.split('base64,')[1]),
+			msg: message.body,
 			author: message.author
 		  }
 		await sendCmd(msgJson, message)
