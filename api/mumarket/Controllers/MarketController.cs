@@ -1,12 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using mumarket.DataContracts.Request;
-using mumarket.DataContracts.Responses;
 using mumarket.Models;
 using mumarket.Models.Commands;
-using OpenAI_API;
-using OpenAI_API.Chat;
-using OpenAI_API.Models;
+using OpenAI;
+using OpenAI.Chat;
 
 namespace mumarket.Controllers
 {
@@ -16,8 +14,9 @@ namespace mumarket.Controllers
     {
         private readonly ILogger<MarketController> _logger;
         private readonly MuMarketDbContext _db;
-        private readonly OpenAIAPI _chatGpt;
-        private readonly Conversation _chat;
+        private readonly OpenAIClient _chatGpt;
+        private readonly ChatClient _chat;
+        private readonly ChatMessage _conversationSetup;
 
 
         public MarketController(
@@ -28,10 +27,9 @@ namespace mumarket.Controllers
             _logger = logger;
             _db = db;
             var key = configuration.GetValue<string>("openai");
-            _chatGpt = new OpenAI_API.OpenAIAPI(key);
-            _chat = _chatGpt.Chat.CreateConversation();
-            _chat.Model = Model.GPT4;
-            _chat.RequestParameters.Temperature = 0.9;
+            _chatGpt = new OpenAIClient(key);
+            _chat = _chatGpt.GetChatClient("gpt-5-mini");
+            _conversationSetup = ChatMessage.CreateSystemMessage("You are Mu online Market Bot, a bot that helps users to manage their buy and sell orders in the MuMarket platform, your major labor is identify when a message is a sell, buy or just spam. You are friendly and helpful.");
         }
 
         [HttpPost("commands")]
@@ -52,6 +50,7 @@ namespace mumarket.Controllers
         [HttpPost("sell")]
         public async Task PostSell(AddSellRequest request)
         {
+            _logger.LogInformation("Empezando a registrar venta");
             using (var trx = _db.Database.BeginTransaction())
             {
                 try
@@ -70,14 +69,23 @@ namespace mumarket.Controllers
 
                     if (!sellExists)
                     {
+                        _logger.LogInformation("Revisando si es venta");
+
                         var question = $"Answer with 'yes' or 'no' if the next message is a buy or sell offer having considering additionally that B<, S<, B>, S>, B> , S> ; means BUY or SELL: '{request.Post}'";
-                        _chat.AppendUserInput(question);
-                        var answer = await _chat.GetResponseFromChatbotAsync();
-                        isSell = answer.Contains("yes", StringComparison.InvariantCultureIgnoreCase);
+                        var answer = await _chat.CompleteChatAsync([_conversationSetup, ChatMessage.CreateUserMessage(question)]);
+                        isSell = answer.Value.Content[0].Text.Contains("yes", StringComparison.InvariantCultureIgnoreCase);
                     }
+                    else
+                    {
+                        _logger.LogInformation("La venta ya existia");
+                    }
+
+                    _logger.LogInformation("Revisando si es comando");
 
                     if (!sellExists && !request.Post!.StartsWith("/$"))
                     {
+                        _logger.LogInformation("Insertando venta en db");
+
                         var sell = await _db.Sells.AddAsync(new Sell
                         {
                             Author = request.Author,
@@ -90,6 +98,7 @@ namespace mumarket.Controllers
                         //SendToChatGpt(sell.Entity, sell.Entity.Id);
                     }
                     trx.Commit();
+                    _logger.LogInformation("La venta ya se guardo en la db");
                 }
                 catch (ChatGptException e)
                 {
@@ -110,8 +119,9 @@ namespace mumarket.Controllers
                 try
                 {
                     var pedidos = _db.Sells.Select(x => $"Pedido de venta id: {x.Id}, contenido: {x.Post}, autor: {x.Author}");
-                    _chat.AppendUserInput($"{req} y filtra sobre pedidos de venta unicamente incluidos a continuacion: {string.Join(";", pedidos)}");
-                    return await _chat.GetResponseFromChatbotAsync();
+                    // _chat.AppendUserInput($"{req} y filtra sobre pedidos de venta unicamente incluidos a continuacion: {string.Join(";", pedidos)}");
+                    //return await _chat.GetResponseFromChatbotAsync();
+                    return string.Empty;
                 }
                 catch
                 {
@@ -128,8 +138,9 @@ namespace mumarket.Controllers
                 try
                 {
                     var request = _db.Sells.Where(x => x.CreatedAt.Date == DateTime.Today.Date).Select(x => $"Pedido de compra id: {x.Id}, contenido: {x.Post}, autor: {x.Author}");
-                    _chat.AppendUserInput($"{req} y filtra sobre pedidos de compra unicamente incluidos a continuacion: {string.Join(";", request)}");
-                    return await _chat.GetResponseFromChatbotAsync();
+                    //_chat.AppendUserInput($"{req} y filtra sobre pedidos de compra unicamente incluidos a continuacion: {string.Join(";", request)}");
+                    //return await _chat.GetResponseFromChatbotAsync();
+                    return string.Empty;
                 }
                 catch
                 {
@@ -144,11 +155,11 @@ namespace mumarket.Controllers
             {
                 if (request?.Post?.ToLowerInvariant().Contains("s>") ?? false)
                 {
-                    _chat.AppendUserInput($"Esta es parte de una lista de pedidos de venta, asignale la fecha y hora actual, el id es: {id} el contenido es: {request.Post}, la info de autor es: {request.Author}");
+                    //_chat.AppendUserInput($"Esta es parte de una lista de pedidos de venta, asignale la fecha y hora actual, el id es: {id} el contenido es: {request.Post}, la info de autor es: {request.Author}");
                 }
                 else if (request?.Post?.ToLowerInvariant().Contains("b>") ?? false)
                 {
-                    _chat.AppendUserInput($"Esta es parte de una lista de pedidos de compra, asignale la fecha y hora actual, el id es: {id} el contenido es: {request.Post}, la info de autor es: {request.Author}");
+                   // _chat.AppendUserInput($"Esta es parte de una lista de pedidos de compra, asignale la fecha y hora actual, el id es: {id} el contenido es: {request.Post}, la info de autor es: {request.Author}");
                 }
             }
             catch
